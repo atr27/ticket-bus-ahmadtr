@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  --primary: 0 72.2% 50.6%;
+  --primary-foreground: 0 85.7% 97.3%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 72.2% 50.6%;
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  font-family: var(--font-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 72.2% 50.6%;
+    --primary-foreground: 0 85.7% 97.3%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 72.2% 50.6%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Custom styles for better UI */
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Form input focus styles */
+.focus\:border-red-500:focus {
+  border-color: #ef4444 !important;
+}
+
+.focus\:ring-red-500:focus {
+  --tw-ring-color: #ef4444 !important;
+}
+
+/* Fix input text color */
+input[type="text"], 
+input[type="date"], 
+input[type="email"], 
+input[type="password"], 
+select, 
+textarea {
+  color: hsl(var(--foreground)) !important;
+}
+
+input[type="text"]::placeholder, 
+input[type="date"]::placeholder, 
+input[type="email"]::placeholder, 
+input[type="password"]::placeholder, 
+textarea::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Ensure proper text color in light mode */
+@media (prefers-color-scheme: light) {
+  input[type="text"], 
+  input[type="date"], 
+  input[type="email"], 
+  input[type="password"], 
+  select, 
+  textarea {
+    color: #1f2937 !important;
+  }
+  
+  input[type="text"]::placeholder, 
+  input[type="date"]::placeholder, 
+  input[type="email"]::placeholder, 
+  input[type="password"]::placeholder, 
+  textarea::placeholder {
+    color: #6b7280 !important;
+  }
+}
+
+/* Fix for shadcn/ui components */
+[data-radix-select-trigger] {
+  color: hsl(var(--foreground)) !important;
+  background-color: #ffffff !important;
+}
+
+[data-radix-select-content] {
+  background-color: #ffffff !important;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-radix-select-trigger] {
+    color: #1f2937 !important;
+    background-color: #ffffff !important;
+  }
+  
+  [data-radix-select-content] {
+    background-color: #ffffff !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-radix-select-trigger] {
+    background-color: hsl(var(--background)) !important;
+  }
+  
+  [data-radix-select-content] {
+    background-color: hsl(var(--popover)) !important;
+  }
+}
+
+/* Additional fix for any input elements */
+.bg-background {
+  color: hsl(var(--foreground)) !important;
+}
+
+@media (prefers-color-scheme: light) {
+  .bg-background {
+    color: #1f2937 !important;
+    background-color: #ffffff !important;
+  }
+}
+
+/* Specific fix for select components to ensure solid background */
+button[role="combobox"] {
+  background-color: #ffffff !important;
+}
+
+div[role="listbox"] {
+  background-color: #ffffff !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  button[role="combobox"] {
+    background-color: hsl(var(--background)) !important;
+  }
+  
+  div[role="listbox"] {
+    background-color: hsl(var(--popover)) !important;
+  }
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.hover\:scale-105:hover {
+  --tw-scale-x: 1.05;
+  --tw-scale-y: 1.05;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Generation Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .test-button:hover {
+            background: #b91c1c;
+        }
+        .booking-info {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #dc2626;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #10b981;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚌 PDF Ticket Generation Test</h1>
+        <p>This page tests the PDF generation functionality for bus tickets.</p>
+        
+        <div class="booking-info">
+            <h3>Test Booking Details</h3>
+            <p><strong>Booking ID:</strong> <code>test-booking-123</code></p>
+            <p><strong>Route:</strong> Jakarta → Bandung</p>
+            <p><strong>Passengers:</strong> 2 (John Doe, Jane Doe)</p>
+            <p><strong>Status:</strong> <span class="status">CONFIRMED</span></p>
+            <p><strong>Total Amount:</strong> Rp 150,000</p>
+        </div>
+        
+        <button class="test-button" onclick="generateTestPDF()">
+            📄 Generate Test PDF Ticket
+        </button>
+        
+        <div id="result" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        // Test booking data
+        const testBookingData = {
+            id: "test-booking-123",
+            status: "CONFIRMED",
+            paymentStatus: "PAID",
+            totalAmount: 150000,
+            seatIds: ["A1", "A2"],
+            passengerDetails: [
+                {
+                    name: "John Doe",
+                    age: "30",
+                    gender: "Male",
+                    seatNumber: "A1"
+                },
+                {
+                    name: "Jane Doe",
+                    age: "28",
+                    gender: "Female", 
+                    seatNumber: "A2"
+                }
+            ],
+            createdAt: new Date().toISOString(),
+            schedule: {
+                id: "schedule-456",
+                departureTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                arrivalTime: new Date(Date.now() + 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000).toISOString(),
+                fare: 70000,
+                bus: {
+                    id: "bus-789",
+                    operator: "Primajasa",
+                    type: "Executive",
+                    totalSeats: 40
+                },
+                route: {
+                    id: "route-101",
+                    origin: "Jakarta",
+                    destination: "Bandung",
+                    duration: 480
+                }
+            },
+            payment: {
+                id: "payment-202",
+                amount: 150000,
+                method: "Credit Card",
+                status: "PAID",
+                createdAt: new Date().toISOString()
+            }
+        };
+
+        // PDF Generation function (copied from ticket-generator.ts)
+        function generateTicketPDF(bookingData) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Helper functions
+            const formatDate = (dateString) => {
+                return new Date(dateString).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            };
+
+            const formatTime = (dateString) => {
+                return new Date(dateString).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+            };
+
+            const formatDuration = (minutes) => {
+                if (!minutes) return 'N/A';
+                const hours = Math.floor(minutes / 60);
+                const mins = minutes % 60;
+                return `${hours}h ${mins}m`;
+            };
+
+            const formatCurrency = (amount) => {
+                return new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR' 
+                }).format(amount);
+            };
+
+            // Set up colors
+            const primaryColor = [220, 38, 38];
+            const textColor = [30, 41, 59];
+
+            let yPosition = 20;
+
+            // Header
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('🚌 BUS TICKET', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Thank you for choosing our service', 105, 30, { align: 'center' });
+
+            yPosition = 50;
+
+            // Booking ID and Status
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Booking Information', 20, yPosition);
+            
+            yPosition += 10;
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Booking ID: ${bookingData.id}`, 20, yPosition);
+            doc.text(`Status: ${bookingData.status}`, 120, yPosition);
+            
+            yPosition += 8;
+            doc.text(`Payment: ${bookingData.paymentStatus}`, 20, yPosition);
+            doc.text(`Booked: ${formatDate(bookingData.createdAt)}`, 120, yPosition);
+
+            yPosition += 15;
+
+            // Journey Details Section
+            doc.setFillColor(248, 250, 252);
+            doc.rect(15, yPosition - 5, 180, 45, 'F');
+            
+            doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('🛣️ Journey Details', 20, yPosition + 5);
+
+            yPosition += 15;
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            
+            // Route
+            doc.setFont('helvetica', 'bold');
+            doc.text('Route:', 20, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`${bookingData.schedule.route.origin} → ${bookingData.schedule.route.destination}`, 50, yPosition);
+            
+            yPosition += 8;
+            doc.setFont('helvetica', 'bold');
+            doc.text('Date:', 20, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(formatDate(bookingData.schedule.departureTime), 50, yPosition);
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Duration:', 120, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(formatDuration(bookingData.schedule.route.duration), 150, yPosition);
+            
+            yPosition += 8;
+            doc.setFont('helvetica', 'bold');
+            doc.text('Departure:', 20, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(formatTime(bookingData.schedule.departureTime), 50, yPosition);
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Arrival:', 120, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(formatTime(bookingData.schedule.arrivalTime), 150, yPosition);
+            
+            yPosition += 8;
+            doc.setFont('helvetica', 'bold');
+            doc.text('Operator:', 20, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(bookingData.schedule.bus.operator, 50, yPosition);
+            
+            doc.setFont('helvetica', 'bold');
+            doc.text('Bus Type:', 120, yPosition);
+            doc.setFont('helvetica', 'normal');
+            doc.text(bookingData.schedule.bus.type, 150, yPosition);
+
+            yPosition += 20;
+
+            // Passenger Details Section
+            doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('👥 Passenger Details', 20, yPosition);
+
+            yPosition += 10;
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+            doc.setFontSize(10);
+
+            bookingData.passengerDetails.forEach((passenger, index) => {
+                doc.setFillColor(248, 250, 252);
+                doc.rect(15, yPosition - 3, 180, 12, 'F');
+                
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${index + 1}. ${passenger.name}`, 20, yPosition + 3);
+                
+                doc.setFont('helvetica', 'normal');
+                doc.text(`${passenger.gender} • Age ${passenger.age}`, 20, yPosition + 8);
+                
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Seat ${passenger.seatNumber}`, 160, yPosition + 5);
+                
+                yPosition += 18;
+            });
+
+            yPosition += 10;
+
+            // Payment Summary Section
+            doc.setFillColor(248, 250, 252);
+            doc.rect(15, yPosition - 5, 180, 35, 'F');
+            
+            doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('💳 Payment Summary', 20, yPosition + 5);
+
+            yPosition += 15;
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            
+            const baseFare = bookingData.schedule.fare * bookingData.passengerDetails.length;
+            const serviceFee = 5000;
+            
+            doc.text(`Base Fare (${bookingData.passengerDetails.length} passenger${bookingData.passengerDetails.length > 1 ? 's' : ''}):`, 20, yPosition);
+            doc.text(formatCurrency(baseFare), 160, yPosition);
+            
+            yPosition += 8;
+            doc.text('Service Fee:', 20, yPosition);
+            doc.text(formatCurrency(serviceFee), 160, yPosition);
+            
+            yPosition += 8;
+            doc.setFont('helvetica', 'bold');
+            doc.text('Total Paid:', 20, yPosition);
+            doc.text(formatCurrency(bookingData.totalAmount), 160, yPosition);
+            
+            if (bookingData.payment) {
+                yPosition += 8;
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Payment Method: ${bookingData.payment.method}`, 20, yPosition);
+            }
+
+            yPosition += 20;
+
+            // Footer
+            doc.setFillColor(30, 41, 59);
+            doc.rect(0, yPosition, 210, 40, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Important Instructions:', 105, yPosition + 10, { align: 'center' });
+            doc.text('• Please arrive at the boarding point 30 minutes before departure', 105, yPosition + 18, { align: 'center' });
+            doc.text('• Show this ticket (printed or digital) to the bus operator for verification', 105, yPosition + 25, { align: 'center' });
+            doc.text('• For any queries, contact our support team', 105, yPosition + 32, { align: 'center' });
+
+            return doc;
+        }
+
+        function generateTestPDF() {
+            try {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<p style="color: #059669;">⏳ Generating PDF...</p>';
+                
+                const pdf = generateTicketPDF(testBookingData);
+                pdf.save(`test-bus-ticket-${testBookingData.id}.pdf`);
+                
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: #d1fae5; border: 1px solid #10b981; border-radius: 6px; color: #065f46;">
+                        <strong>✅ Success!</strong> PDF ticket has been generated and downloaded.
+                        <br><small>Check your Downloads folder for: test-bus-ticket-${testBookingData.id}.pdf</small>
+                    </div>
+                `;
+            } catch (error) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: #fee2e2; border: 1px solid #dc2626; border-radius: 6px; color: #991b1b;">
+                        <strong>❌ Error:</strong> ${error.message}
+                    </div>
+                `;
+                console.error('PDF Generation Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
