@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Create invoice with Xendit
-    const invoiceData: any = {
+    const invoiceData = {
       externalId: `booking-${bookingId}-${Date.now()}`,
       amount: amount,
       description: `Bus ticket from ${booking.schedule.route.origin} to ${booking.schedule.route.destination}`,
@@ -106,12 +106,10 @@ export async function POST(request: NextRequest) {
 
     // Add payment channels if specific method is selected
     const channels = getPaymentChannels(paymentMethod);
-    if (channels) {
-      invoiceData.paymentMethods = channels;
-    }
+    const finalInvoiceData = channels ? { ...invoiceData, paymentMethods: channels } : invoiceData;
 
     const invoiceResponse = await invoiceClient.createInvoice({
-      data: invoiceData
+      data: finalInvoiceData
     });
 
     // Validate that we received a valid invoice ID from Xendit

@@ -11,7 +11,11 @@ interface BookingDetails {
   userId: string
   scheduleId: string
   seatIds: string[]
-  passengerDetails: any
+  passengerDetails: Array<{
+    name: string
+    age: number
+    gender: string
+  }>
   totalAmount: number
   status: string
   paymentStatus: string
@@ -73,7 +77,7 @@ export default function BookingDetailsPage() {
       } else {
         setError('Booking not found')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching booking:', error)
       setError('Failed to load booking details')
     } finally {
@@ -119,7 +123,7 @@ export default function BookingDetailsPage() {
       totalAmount: booking.totalAmount,
       seatIds: booking.seatIds,
       passengerDetails: Array.isArray(booking.passengerDetails) 
-        ? booking.passengerDetails.map((passenger: any, index: number) => ({
+        ? booking.passengerDetails.map((passenger, index: number) => ({
             name: passenger.name,
             age: passenger.age.toString(),
             gender: passenger.gender,
@@ -349,7 +353,7 @@ export default function BookingDetailsPage() {
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Passenger Details</h2>
               <div className="space-y-3">
                 {Array.isArray(booking.passengerDetails) ? (
-                  booking.passengerDetails.map((passenger: any, index: number) => (
+                  booking.passengerDetails.map((passenger, index: number) => (
                     <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded">
                       <div>
                         <p className="font-medium">{passenger.name}</p>

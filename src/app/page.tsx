@@ -110,7 +110,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-700 mb-6">"Booking bus tickets has never been easier! The interface is intuitive and the booking process is seamless. Highly recommended!"</p>
+              <p className="text-gray-700 mb-6">&quot;Booking bus tickets has never been easier! The interface is intuitive and the booking process is seamless. Highly recommended!&quot;</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold">
                   A
@@ -132,7 +132,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-700 mb-6">"Great service and reliable buses. I've been using this platform for months and never had any issues. The customer support is excellent!"</p>
+              <p className="text-gray-700 mb-6">&quot;Great service and reliable buses. I&apos;ve been using this platform for months and never had any issues. The customer support is excellent!&quot;</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold">
                   S
@@ -154,7 +154,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-700 mb-6">"The real-time tracking feature is amazing! I can see exactly where my bus is and plan my departure accordingly. Very convenient!"</p>
+              <p className="text-gray-700 mb-6">&quot;The real-time tracking feature is amazing! I can see exactly where my bus is and plan my departure accordingly. Very convenient!&quot;</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold">
                   B

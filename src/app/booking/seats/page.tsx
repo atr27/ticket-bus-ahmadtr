@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -49,7 +49,7 @@ interface Passenger {
   seatNumber: string
 }
 
-export default function SeatSelectionPage() {
+function SeatSelectionPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const scheduleId = searchParams.get('scheduleId')
@@ -439,5 +439,13 @@ export default function SeatSelectionPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SeatSelectionPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <SeatSelectionPageContent />
+    </Suspense>
   )
 }

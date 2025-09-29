@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const date = searchParams.get('date')
 
     // Search by routeId or by origin/destination to find routes
-    let routeWhereClause: any = {}
+    let routeWhereClause: Record<string, unknown> = {}
     
     if (routeId) {
       routeWhereClause.id = routeId

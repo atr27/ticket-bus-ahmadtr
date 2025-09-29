@@ -29,8 +29,8 @@ export default function TestPaymentPage() {
       } else {
         setSimulationResult(`Error: ${data.error}`)
       }
-    } catch (error: any) {
-      setSimulationResult(`Error: ${error.message || error}`)
+    } catch (error: unknown) {
+      setSimulationResult(`Error: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setIsSimulating(false)
     }
@@ -79,7 +79,7 @@ export default function TestPaymentPage() {
             <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Payment Button</h2>
               <p className="text-gray-600 mb-4">
-                Click the button below to test the Xendit payment integration. You will be redirected to Xendit's payment page.
+                Click the button below to test the Xendit payment integration. You will be redirected to Xendit&apos;s payment page.
               </p>
               
               <PaymentButton 

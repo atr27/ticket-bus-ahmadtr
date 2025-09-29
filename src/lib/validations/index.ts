@@ -1,17 +1,15 @@
+
 import { z } from 'zod'
 
 // Search validation
 export const searchFormSchema = z.object({
   from: z.string().min(1, 'Origin city is required'),
   to: z.string().min(1, 'Destination city is required'),
-  departureDate: z.date({
-    required_error: 'Departure date is required',
-  }),
+  departureDate: z.date(),
   returnDate: z.date().optional(),
   passengers: z.number().min(1, 'At least 1 passenger required').max(9, 'Maximum 9 passengers allowed'),
 })
 
-// Contact form validation
 export const contactFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
@@ -63,8 +61,8 @@ export const searchQuerySchema = z.object({
   to: z.string(),
   date: z.string(),
   passengers: z.string().transform(Number).pipe(z.number().min(1).max(9)),
-  page: z.string().transform(Number).pipe(z.number().min(1)).optional().default('1'),
-  limit: z.string().transform(Number).pipe(z.number().min(1).max(50)).optional().default('10'),
+  page: z.string().transform(Number).pipe(z.number().min(1)).optional(),
+  limit: z.string().transform(Number).pipe(z.number().min(1).max(50)).optional(),
 })
 
 // User registration validation

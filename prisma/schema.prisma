@@ -108,14 +108,14 @@ model Booking {
 }
 
 model Payment {
-  id        String   @id @default(cuid())
-  bookingId String   @unique
+  id        String        @id @default(cuid())
+  bookingId String        @unique
   xenditId  String
   amount    Float
   method    String
-  status    String
-  createdAt DateTime @default(now())
-  booking   Booking  @relation(fields: [bookingId], references: [id])
+  status    PaymentStatus
+  createdAt DateTime      @default(now())
+  booking   Booking       @relation(fields: [bookingId], references: [id])
 }
 
 enum BookingStatus {
@@ -128,4 +128,5 @@ enum PaymentStatus {
   PENDING
   PAID
   FAILED
+  REFUNDED
 }

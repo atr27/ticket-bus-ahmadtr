@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -50,7 +50,7 @@ interface Booking {
   }
 }
 
-export default function BookingSuccessPage() {
+function BookingSuccessPageContent() {
   const searchParams = useSearchParams()
   const bookingId = searchParams.get('bookingId')
   const [booking, setBooking] = useState<Booking | null>(null)
@@ -85,7 +85,24 @@ export default function BookingSuccessPage() {
 
   const handleDownloadTicket = () => {
     if (!booking) return
-    downloadTicket(booking)
+    
+    // Transform booking data to match the ticket generator interface
+    const ticketData = {
+      ...booking,
+      schedule: {
+        ...booking.schedule,
+        route: {
+          ...booking.schedule.route,
+          duration: booking.schedule.route.duration ?? null
+        }
+      },
+      payment: booking.payment ? {
+        ...booking.payment,
+        xenditId: 'N/A' // Default value since this field might not exist in all payment objects
+      } : null
+    }
+    
+    downloadTicket(ticketData)
   }
 
   const handleShareBooking = () => {
@@ -307,5 +324,13 @@ export default function BookingSuccessPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function BookingSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <BookingSuccessPageContent />
+    </Suspense>
   )
 }

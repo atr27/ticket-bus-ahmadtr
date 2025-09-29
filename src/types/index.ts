@@ -1,24 +1,15 @@
 import { Prisma } from '@prisma/client'
-
 // Database types with relations
 export type UserWithBookings = Prisma.UserGetPayload<{
   include: { bookings: true }
 }>
 
-export type BusWithOperator = Prisma.BusGetPayload<{
+export type BusWithDetails = Prisma.BusGetPayload<{
   include: { 
-    operator: true
     seats: true
     schedules: {
       include: {
-        route: {
-          include: {
-            fromCity: true
-            toCity: true
-            fromStation: true
-            toStation: true
-          }
-        }
+        route: true
       }
     }
   }
@@ -28,18 +19,10 @@ export type ScheduleWithDetails = Prisma.ScheduleGetPayload<{
   include: {
     bus: {
       include: {
-        operator: true
         seats: true
       }
     }
-    route: {
-      include: {
-        fromCity: true
-        toCity: true
-        fromStation: true
-        toStation: true
-      }
-    }
+    route: true
   }
 }>
 
@@ -48,23 +31,12 @@ export type BookingWithDetails = Prisma.BookingGetPayload<{
     user: true
     schedule: {
       include: {
-        bus: {
-          include: { operator: true }
-        }
-        route: {
-          include: {
-            fromCity: true
-            toCity: true
-            fromStation: true
-            toStation: true
-          }
-        }
+        bus: true
+        route: true
       }
     }
-    passengers: true
-    seatBookings: {
-      include: { seat: true }
-    }
+    seats: true
+    payment: true
   }
 }>
 
@@ -129,7 +101,7 @@ export interface PaymentResponse {
 }
 
 // API Response types
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean
   data?: T
   message?: string

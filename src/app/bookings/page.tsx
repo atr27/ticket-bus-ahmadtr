@@ -132,7 +132,7 @@ export default function BookingsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
             <h3 className="mt-4 text-xl font-medium text-gray-900">No bookings yet</h3>
-            <p className="mt-2 text-gray-600">You haven't made any bookings yet. Start by searching for a bus route.</p>
+            <p className="mt-2 text-gray-600">You haven&apos;t made any bookings yet. Start by searching for a bus route.</p>
             <div className="mt-6">
               <Link
                 href="/search"

@@ -107,7 +107,7 @@ export default function SignInPage() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500">
-                Don't have an account yet?
+                Don&apos;t have an account yet?
               </span>
             </div>
           </div>
