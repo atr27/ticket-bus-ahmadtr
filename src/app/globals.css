@@ -208,3 +208,48 @@ div[role="listbox"] {
   --tw-scale-y: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+
+/* Fix for date picker popover background */
+[data-radix-popper-content-wrapper] {
+  background-color: #ffffff !important;
+}
+
+[data-radix-popper-content-wrapper] > div {
+  background-color: #ffffff !important;
+}
+
+/* Ensure calendar has solid background */
+.rdp {
+  background-color: #ffffff !important;
+}
+
+.rdp-month {
+  background-color: #ffffff !important;
+}
+
+/* Fix for date picker button background */
+button[data-radix-popover-trigger] {
+  background-color: #ffffff !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-radix-popper-content-wrapper] {
+    background-color: hsl(var(--popover)) !important;
+  }
+  
+  [data-radix-popper-content-wrapper] > div {
+    background-color: hsl(var(--popover)) !important;
+  }
+  
+  .rdp {
+    background-color: hsl(var(--popover)) !important;
+  }
+  
+  .rdp-month {
+    background-color: hsl(var(--popover)) !important;
+  }
+  
+  button[data-radix-popover-trigger] {
+    background-color: hsl(var(--background)) !important;
+  }
+}
