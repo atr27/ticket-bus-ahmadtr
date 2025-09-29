@@ -31,9 +31,15 @@ export function DatePicker({
   minDate,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
+  
+  // Debug log to see current date value
+  React.useEffect(() => {
+    console.log('DatePicker date prop:', date)
+  }, [date])
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
+      console.log('Date selected:', selectedDate) // Debug log
       onDateChange?.(selectedDate)
       setOpen(false) // Close the popover after selection
     }
@@ -56,13 +62,17 @@ export function DatePicker({
             className={cn(
               "w-full justify-start text-left font-normal h-12 pl-12 pr-4 rounded-xl border-2 focus:border-red-500 focus:ring-red-500 focus:ring-2 focus:ring-offset-2 bg-white hover:bg-gray-50 relative",
               !date && "text-muted-foreground",
+              date && "text-gray-900",
               className
             )}
             disabled={disabled}
           >
             <CalendarIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-            <span className="block truncate">
-              {date ? format(date, "PPP") : placeholder}
+            <span className={cn(
+              "block truncate",
+              date ? "text-gray-900 font-medium" : "text-gray-500"
+            )}>
+              {date ? format(date, "dd MMM yyyy") : placeholder}
             </span>
           </Button>
         </div>

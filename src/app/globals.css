@@ -234,6 +234,19 @@ button[data-radix-popover-trigger] {
   cursor: pointer !important;
 }
 
+/* Ensure date picker text is visible */
+button[data-radix-popover-trigger] span {
+  color: inherit !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Fix selected date text visibility */
+button[data-radix-popover-trigger]:not([data-placeholder]) span {
+  color: #1f2937 !important;
+  font-weight: 500 !important;
+}
+
 /* Ensure calendar icon doesn't interfere with button clicks */
 button[data-radix-popover-trigger] .lucide-calendar {
   pointer-events: none !important;
