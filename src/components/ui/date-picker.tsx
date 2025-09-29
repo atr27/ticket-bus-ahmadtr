@@ -33,18 +33,22 @@ export function DatePicker({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-full justify-start text-left font-normal h-12 pl-12 rounded-xl border-2 focus:border-red-500 focus:ring-red-500 focus:ring-2 focus:ring-offset-2 bg-white hover:bg-gray-50",
-            !date && "text-muted-foreground",
-            className
-          )}
-          disabled={disabled}
-        >
-          <CalendarIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-          {date ? format(date, "PPP") : <span>{placeholder}</span>}
-        </Button>
+        <div className="relative">
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-full justify-start text-left font-normal h-12 pl-12 pr-4 rounded-xl border-2 focus:border-red-500 focus:ring-red-500 focus:ring-2 focus:ring-offset-2 bg-white hover:bg-gray-50 relative",
+              !date && "text-muted-foreground",
+              className
+            )}
+            disabled={disabled}
+          >
+            <CalendarIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+            <span className="block truncate">
+              {date ? format(date, "PPP") : placeholder}
+            </span>
+          </Button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar

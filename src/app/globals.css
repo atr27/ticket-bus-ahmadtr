@@ -230,6 +230,47 @@ div[role="listbox"] {
 /* Fix for date picker button background */
 button[data-radix-popover-trigger] {
   background-color: #ffffff !important;
+  position: relative !important;
+  cursor: pointer !important;
+}
+
+/* Ensure calendar icon doesn't interfere with button clicks */
+button[data-radix-popover-trigger] .lucide-calendar {
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Fix calendar widget styling */
+.rdp-button {
+  background-color: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.rdp-button:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.rdp-day_selected .rdp-button {
+  background-color: #dc2626 !important;
+  color: white !important;
+}
+
+.rdp-day_today .rdp-button {
+  background-color: #fef2f2 !important;
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+/* Fix navigation buttons in calendar */
+.rdp-nav_button {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  cursor: pointer !important;
+}
+
+.rdp-nav_button:hover {
+  background-color: #f9fafb !important;
 }
 
 @media (prefers-color-scheme: dark) {
