@@ -69,12 +69,12 @@ export default function RootLayout({
                     <ul className="space-y-2 text-gray-300">
                       <li>support@ticketbus.id</li>
                       <li>+62 800 123 4567</li>
-                      <li>Jakarta, Indonesia</li>
+                      <li>Bandung, Indonesia</li>
                     </ul>
                   </div>
                 </div>
                 <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                  <p>© 2023 Ticket Bus. All rights reserved.</p>
+                  <p>© 2025 Ticket Bus. All rights reserved.</p>
                 </div>
               </div>
             </footer>
