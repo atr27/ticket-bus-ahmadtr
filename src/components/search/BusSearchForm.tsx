@@ -9,12 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { DatePicker } from '@/components/ui/date-picker'
 
 export default function BusSearchForm() {
   const [searchData, setSearchData] = useState({
     origin: '',
     destination: '',
-    date: format(new Date(), 'yyyy-MM-dd'),
+    date: new Date(),
     passengers: '1'
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -28,7 +29,7 @@ export default function BusSearchForm() {
     const params = new URLSearchParams({
       origin: searchData.origin,
       destination: searchData.destination,
-      date: searchData.date,
+      date: format(searchData.date, 'yyyy-MM-dd'),
       passengers: searchData.passengers
     })
     
@@ -102,18 +103,12 @@ export default function BusSearchForm() {
                   <Calendar className="h-5 w-5 text-red-600" />
                   Travel Date
                 </Label>
-                <div className="relative">
-                  <Input
-                    id="date"
-                    type="date"
-                    value={searchData.date}
-                    min={format(new Date(), 'yyyy-MM-dd')}
-                    onChange={(e) => setSearchData(prev => ({ ...prev, date: e.target.value }))}
-                    className="h-12 pl-12 rounded-xl border-2 focus:border-red-500 focus:ring-red-500 focus:ring-2 focus:ring-offset-2"
-                    required
-                  />
-                  <Calendar className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                </div>
+                <DatePicker
+                  date={searchData.date}
+                  onDateChange={(date) => date && setSearchData(prev => ({ ...prev, date }))}
+                  placeholder="Select travel date"
+                  minDate={new Date()}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="passengers" className="flex items-center gap-2 text-gray-700 font-medium">
