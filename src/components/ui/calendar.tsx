@@ -32,11 +32,11 @@ function Calendar({
         nav_button_previous: "absolute left-2",
         nav_button_next: "absolute right-2",
         table: "w-full border-collapse mt-2",
-        head_row: "flex mb-1",
+        head_row: "flex mb-2",
         head_cell:
-          "text-gray-600 rounded-md w-10 h-8 font-medium text-sm flex items-center justify-center",
-        row: "flex w-full",
-        cell: "h-10 w-10 text-center text-sm p-0 relative hover:bg-gray-50 rounded-md transition-colors",
+          "text-gray-600 w-10 h-10 font-semibold text-xs uppercase tracking-wide flex items-center justify-center",
+        row: "flex w-full mb-1",
+        cell: "h-10 w-10 text-center text-sm p-0 relative flex items-center justify-center",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-10 w-10 p-0 font-normal hover:bg-gray-100 rounded-md transition-all duration-200"
