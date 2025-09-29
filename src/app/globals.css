@@ -211,20 +211,67 @@ div[role="listbox"] {
 
 /* Fix for date picker popover background */
 [data-radix-popper-content-wrapper] {
-  background-color: #ffffff !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 [data-radix-popper-content-wrapper] > div {
-  background-color: #ffffff !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
-/* Ensure calendar has solid background */
+/* Enhanced calendar styling */
 .rdp {
   background-color: #ffffff !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid #e5e7eb !important;
 }
 
 .rdp-month {
   background-color: #ffffff !important;
+}
+
+/* Calendar header styling */
+.rdp-caption {
+  padding: 0.75rem 0 !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.rdp-caption_label {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+}
+
+/* Calendar navigation buttons */
+.rdp-nav_button {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid #d1d5db !important;
+  background-color: #ffffff !important;
+  transition: all 0.2s ease !important;
+}
+
+.rdp-nav_button:hover {
+  background-color: #fef2f2 !important;
+  border-color: #fca5a5 !important;
+}
+
+/* Calendar table styling */
+.rdp-table {
+  width: 100% !important;
+  margin-top: 0.5rem !important;
+}
+
+.rdp-head_cell {
+  width: 2.5rem !important;
+  height: 2rem !important;
+  font-weight: 500 !important;
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
 }
 
 /* Fix for date picker button background */
@@ -253,37 +300,75 @@ button[data-radix-popover-trigger] .lucide-calendar {
   z-index: 1 !important;
 }
 
-/* Fix calendar widget styling */
+/* Calendar day cells styling */
+.rdp-cell {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+
 .rdp-button {
+  width: 100% !important;
+  height: 100% !important;
   background-color: transparent !important;
   border: none !important;
   cursor: pointer !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .rdp-button:hover {
   background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
 }
 
+/* Selected date styling */
 .rdp-day_selected .rdp-button {
   background-color: #dc2626 !important;
   color: white !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2) !important;
 }
 
+.rdp-day_selected .rdp-button:hover {
+  background-color: #b91c1c !important;
+  transform: scale(1.05) !important;
+}
+
+/* Today's date styling */
 .rdp-day_today .rdp-button {
   background-color: #fef2f2 !important;
   color: #dc2626 !important;
   font-weight: 600 !important;
+  border: 2px solid #fca5a5 !important;
 }
 
-/* Fix navigation buttons in calendar */
-.rdp-nav_button {
-  background-color: #ffffff !important;
-  border: 1px solid #e5e7eb !important;
-  cursor: pointer !important;
+.rdp-day_today .rdp-button:hover {
+  background-color: #fee2e2 !important;
 }
 
-.rdp-nav_button:hover {
-  background-color: #f9fafb !important;
+/* Outside days (previous/next month) */
+.rdp-day_outside .rdp-button {
+  color: #9ca3af !important;
+  opacity: 0.6 !important;
+}
+
+/* Disabled days */
+.rdp-day_disabled .rdp-button {
+  color: #d1d5db !important;
+  cursor: not-allowed !important;
+  opacity: 0.4 !important;
+}
+
+.rdp-day_disabled .rdp-button:hover {
+  background-color: transparent !important;
+  transform: none !important;
 }
 
 /* Prevent calendar from triggering form submission */

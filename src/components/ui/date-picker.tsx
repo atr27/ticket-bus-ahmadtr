@@ -31,15 +31,9 @@ export function DatePicker({
   minDate,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
-  
-  // Debug log to see current date value
-  React.useEffect(() => {
-    console.log('DatePicker date prop:', date)
-  }, [date])
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      console.log('Date selected:', selectedDate) // Debug log
       onDateChange?.(selectedDate)
       setOpen(false) // Close the popover after selection
     }
@@ -77,7 +71,11 @@ export function DatePicker({
           </Button>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent 
+        className="w-auto p-0 border-0 shadow-xl" 
+        align="start"
+        sideOffset={4}
+      >
         <Calendar
           mode="single"
           selected={date}
@@ -87,6 +85,7 @@ export function DatePicker({
             return false
           }}
           initialFocus
+          className="rounded-lg border-0 shadow-none"
         />
       </PopoverContent>
     </Popover>
