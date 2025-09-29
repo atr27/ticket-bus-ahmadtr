@@ -273,6 +273,20 @@ button[data-radix-popover-trigger] .lucide-calendar {
   background-color: #f9fafb !important;
 }
 
+/* Prevent calendar from triggering form submission */
+[data-radix-popper-content-wrapper] * {
+  pointer-events: auto !important;
+}
+
+.rdp * {
+  pointer-events: auto !important;
+}
+
+/* Ensure calendar buttons don't submit forms */
+.rdp button {
+  cursor: pointer !important;
+}
+
 @media (prefers-color-scheme: dark) {
   [data-radix-popper-content-wrapper] {
     background-color: hsl(var(--popover)) !important;

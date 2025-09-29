@@ -15,7 +15,7 @@ export default function BusSearchForm() {
   const [searchData, setSearchData] = useState({
     origin: '',
     destination: '',
-    date: new Date(),
+    date: undefined as Date | undefined,
     passengers: '1'
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -23,7 +23,10 @@ export default function BusSearchForm() {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!searchData.origin || !searchData.destination) return
+    if (!searchData.origin || !searchData.destination || !searchData.date) {
+      // You could add a toast notification here to inform user about missing fields
+      return
+    }
 
     setIsLoading(true)
     const params = new URLSearchParams({
@@ -105,7 +108,7 @@ export default function BusSearchForm() {
                 </Label>
                 <DatePicker
                   date={searchData.date}
-                  onDateChange={(date) => date && setSearchData(prev => ({ ...prev, date }))}
+                  onDateChange={(date) => setSearchData(prev => ({ ...prev, date }))}
                   placeholder="Select travel date"
                   minDate={new Date()}
                 />

@@ -30,12 +30,29 @@ export function DatePicker({
   className,
   minDate,
 }: DatePickerProps) {
+  const [open, setOpen] = React.useState(false)
+
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      onDateChange?.(selectedDate)
+      setOpen(false) // Close the popover after selection
+    }
+  }
+
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault() // Prevent form submission
+    e.stopPropagation() // Stop event bubbling
+    setOpen(!open)
+  }
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="relative">
           <Button
+            type="button" // Explicitly set type to button to prevent form submission
             variant={"outline"}
+            onClick={handleButtonClick}
             className={cn(
               "w-full justify-start text-left font-normal h-12 pl-12 pr-4 rounded-xl border-2 focus:border-red-500 focus:ring-red-500 focus:ring-2 focus:ring-offset-2 bg-white hover:bg-gray-50 relative",
               !date && "text-muted-foreground",
@@ -54,7 +71,7 @@ export function DatePicker({
         <Calendar
           mode="single"
           selected={date}
-          onSelect={onDateChange}
+          onSelect={handleDateSelect}
           disabled={(date) => {
             if (minDate && date < minDate) return true
             return false
