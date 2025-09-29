@@ -88,11 +88,11 @@ function SeatSelectionPageContent() {
         
         // Get actual booked seats for this schedule
         const bookingsResponse = await fetch(`/api/bookings/schedule/${scheduleId}${date ? `?date=${date}` : ''}`)
-        let bookedSeatNumbers = new Set<string>()
+        const bookedSeatNumbers = new Set<string>()
         
         if (bookingsResponse.ok) {
           const bookings = await bookingsResponse.json()
-          bookings.forEach((booking: any) => {
+          bookings.forEach((booking: { status: string; seatIds: string[] }) => {
             if (booking.status === 'CONFIRMED') {
               booking.seatIds.forEach((seatId: string) => bookedSeatNumbers.add(seatId))
             }
@@ -144,7 +144,7 @@ function SeatSelectionPageContent() {
     }
 
     fetchSchedule()
-  }, [scheduleId])
+  }, [scheduleId, date])
 
   const handleSeatClick = (seatNumber: string) => {
     const seat = seats.find(s => s.number === seatNumber)
