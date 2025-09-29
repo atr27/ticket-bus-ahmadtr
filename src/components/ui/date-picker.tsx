@@ -1,17 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { format } from "date-fns"
+import ReactDatePicker from "react-datepicker"
 import { Calendar as CalendarIcon } from "lucide-react"
-
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import "react-datepicker/dist/react-datepicker.css"
 
 interface DatePickerProps {
   date?: Date
@@ -30,64 +23,48 @@ export function DatePicker({
   className,
   minDate,
 }: DatePickerProps) {
-  const [open, setOpen] = React.useState(false)
+  const CustomInput = React.forwardRef<
+    HTMLDivElement,
+    { value?: string; onClick?: () => void }
+  >(({ value, onClick }, ref) => (
+    <div
+      ref={ref}
+      onClick={onClick}
+      className={cn(
+        "relative w-full h-12 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus-within:border-red-500 focus-within:ring-red-500 focus-within:ring-2 focus-within:ring-offset-2 bg-white hover:bg-gray-50 cursor-pointer flex items-center",
+        disabled && "opacity-50 cursor-not-allowed",
+        className
+      )}
+    >
+      <CalendarIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+      <span className={cn(
+        "block truncate text-sm",
+        value ? "text-gray-900 font-medium" : "text-gray-500"
+      )}>
+        {value || placeholder}
+      </span>
+    </div>
+  ))
 
-  const handleDateSelect = (selectedDate: Date | undefined) => {
-    if (selectedDate) {
-      onDateChange?.(selectedDate)
-      setOpen(false) // Close the popover after selection
-    }
-  }
-
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.preventDefault() // Prevent form submission
-    e.stopPropagation() // Stop event bubbling
-    setOpen(!open)
-  }
+  CustomInput.displayName = "CustomInput"
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <div className="relative">
-          <Button
-            type="button" // Explicitly set type to button to prevent form submission
-            variant={"outline"}
-            onClick={handleButtonClick}
-            className={cn(
-              "w-full justify-start text-left font-normal h-12 pl-12 pr-4 rounded-xl border-2 focus:border-red-500 focus:ring-red-500 focus:ring-2 focus:ring-offset-2 bg-white hover:bg-gray-50 relative",
-              !date && "text-muted-foreground",
-              date && "text-gray-900",
-              className
-            )}
-            disabled={disabled}
-          >
-            <CalendarIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-            <span className={cn(
-              "block truncate",
-              date ? "text-gray-900 font-medium" : "text-gray-500"
-            )}>
-              {date ? format(date, "dd MMM yyyy") : placeholder}
-            </span>
-          </Button>
-        </div>
-      </PopoverTrigger>
-      <PopoverContent 
-        className="w-auto p-0 border-0 shadow-xl" 
-        align="start"
-        sideOffset={4}
-      >
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={handleDateSelect}
-          disabled={(date) => {
-            if (minDate && date < minDate) return true
-            return false
-          }}
-          initialFocus
-          className="rounded-lg border-0 shadow-none"
-        />
-      </PopoverContent>
-    </Popover>
+    <ReactDatePicker
+      selected={date}
+      onChange={(date: Date | null) => onDateChange?.(date || undefined)}
+      minDate={minDate}
+      disabled={disabled}
+      dateFormat="dd MMM yyyy"
+      placeholderText={placeholder}
+      customInput={<CustomInput />}
+      popperClassName="z-[100]"
+      calendarClassName="shadow-xl border-0 rounded-lg"
+      dayClassName={(date) =>
+        "hover:bg-red-100 focus:bg-red-500 focus:text-white rounded-md"
+      }
+      weekDayClassName={() => "text-gray-600 font-medium"}
+      monthClassName={() => "text-gray-800"}
+      timeClassName={() => "text-gray-600"}
+    />
   )
 }

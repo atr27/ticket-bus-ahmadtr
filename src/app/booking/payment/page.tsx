@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, CreditCard, Smartphone, Building2, QrCode, AlertCircle } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, formatDateForDisplay } from '@/lib/utils'
 import { PaymentButton } from '@/components/payment/payment-button'
 
 interface BookingData {
@@ -299,12 +299,7 @@ function PaymentPageContent() {
                     <span>Date:</span>
                     <span className="font-medium">
                       {searchParams.get('date') 
-                        ? new Date(searchParams.get('date')!).toLocaleDateString('en-US', { 
-                            weekday: 'short', 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                          })
+                        ? formatDateForDisplay(searchParams.get('date')!)
                         : schedule && new Date(schedule.departureTime).toLocaleDateString('en-US', { 
                             weekday: 'short', 
                             year: 'numeric', 

@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ArrowLeft, User, Calendar, Phone, Mail } from 'lucide-react'
-import { cn, formatCurrency, generateSeatMap } from '@/lib/utils'
+import { cn, formatCurrency, generateSeatMap, formatDateForDisplay } from '@/lib/utils'
 
 interface Seat {
   number: string
@@ -86,13 +86,49 @@ function SeatSelectionPageContent() {
         const seatMap = generateSeatMap(scheduleData.bus.totalSeats, 4)
         const seatList: Seat[] = []
         
+        // Get actual booked seats for this schedule
+        const bookingsResponse = await fetch(`/api/bookings/schedule/${scheduleId}${date ? `?date=${date}` : ''}`)
+        let bookedSeatNumbers = new Set<string>()
+        
+        if (bookingsResponse.ok) {
+          const bookings = await bookingsResponse.json()
+          bookings.forEach((booking: any) => {
+            if (booking.status === 'CONFIRMED') {
+              booking.seatIds.forEach((seatId: string) => bookedSeatNumbers.add(seatId))
+            }
+          })
+        }
+        
+        // If we don't have enough real bookings to match the availableSeats count,
+        // add some mock unavailable seats to simulate realistic occupancy
+        const unavailableSeats = new Set(bookedSeatNumbers)
+        const targetUnavailableCount = scheduleData.bus.totalSeats - scheduleData.availableSeats
+        
+        if (unavailableSeats.size < targetUnavailableCount) {
+          const allSeatNumbers: string[] = []
+          seatMap.forEach((row) => {
+            row.forEach((seatNumber) => {
+              if (seatNumber && !unavailableSeats.has(seatNumber)) {
+                allSeatNumbers.push(seatNumber)
+              }
+            })
+          })
+          
+          // Randomly select additional unavailable seats
+          const shuffledSeats = [...allSeatNumbers].sort(() => Math.random() - 0.5)
+          const additionalUnavailable = targetUnavailableCount - unavailableSeats.size
+          for (let i = 0; i < additionalUnavailable; i++) {
+            unavailableSeats.add(shuffledSeats[i])
+          }
+        }
+        
         seatMap.forEach((row, rowIndex) => {
           row.forEach((seatNumber, colIndex) => {
             if (seatNumber) {
               seatList.push({
                 number: seatNumber,
                 type: colIndex === 0 || colIndex === 3 ? 'WINDOW' : 'AISLE',
-                isAvailable: Math.random() > 0.3, // Mock availability for now
+                isAvailable: !unavailableSeats.has(seatNumber),
                 isSelected: false
               })
             }
@@ -366,12 +402,7 @@ function SeatSelectionPageContent() {
                     <span>Date:</span>
                     <span className="font-medium">
                       {date 
-                        ? new Date(date).toLocaleDateString('en-US', { 
-                            weekday: 'short', 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                          })
+                        ? formatDateForDisplay(date)
                         : schedule && new Date(schedule.departureTime).toLocaleDateString('en-US', { 
                             weekday: 'short', 
                             year: 'numeric', 

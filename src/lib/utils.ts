@@ -46,3 +46,30 @@ export function generateSeatMap(totalSeats: number, seatsPerRow: number = 4): st
   
   return seatMap
 }
+
+// Date utility functions to handle timezone issues consistently
+export function formatDateForURL(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+export function formatDateForDisplay(dateString: string | null): string {
+  if (!dateString) return 'Select Date'
+  try {
+    const date = new Date(dateString + 'T00:00:00') // Add time to avoid timezone issues
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    })
+  } catch {
+    return dateString
+  }
+}
+
+export function parseDateFromURL(dateString: string): Date {
+  return new Date(dateString + 'T00:00:00') // Add time to avoid timezone issues
+}

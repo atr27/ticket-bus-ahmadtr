@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { parseDateFromURL } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,7 +54,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Generate dynamic schedules for the requested date (or today if no date provided)
-    const searchDate = date ? new Date(date) : new Date()
+    const searchDate = date ? parseDateFromURL(date) : new Date()
     const today = new Date()
     today.setHours(0, 0, 0, 0) // Reset time to start of day for comparison
     searchDate.setHours(0, 0, 0, 0) // Reset time to start of day
@@ -88,8 +89,20 @@ export async function GET(request: NextRequest) {
         if (bus.type.includes('Executive')) fareMultiplier = 1.2
         if (bus.type.includes('Sleeper')) fareMultiplier = 1.4
         
-        // Generate realistic available seats (80-100% availability)
-        const availableSeats = bus.totalSeats - Math.floor(Math.random() * Math.floor(bus.totalSeats * 0.2))
+        // Calculate real available seats based on confirmed bookings for this schedule
+        const scheduleId = `generated-${route.id}-${bus.id}-${i}`
+        const confirmedBookings = await prisma.booking.findMany({
+          where: {
+            scheduleId: scheduleId,
+            status: 'CONFIRMED',
+          },
+          select: {
+            seatIds: true
+          }
+        })
+        
+        const bookedSeatsCount = confirmedBookings.reduce((total, booking) => total + booking.seatIds.length, 0)
+        const availableSeats = Math.max(0, bus.totalSeats - bookedSeatsCount)
         
         generatedSchedules.push({
           id: `generated-${route.id}-${bus.id}-${i}`,

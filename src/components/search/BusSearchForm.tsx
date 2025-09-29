@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { format } from 'date-fns'
 import { Calendar, MapPin, Users, Search, Bus } from 'lucide-react'
+import { formatDateForURL } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -32,7 +32,7 @@ export default function BusSearchForm() {
     const params = new URLSearchParams({
       origin: searchData.origin,
       destination: searchData.destination,
-      date: format(searchData.date, 'yyyy-MM-dd'),
+      date: formatDateForURL(searchData.date),
       passengers: searchData.passengers
     })
     
@@ -108,7 +108,9 @@ export default function BusSearchForm() {
                 </Label>
                 <DatePicker
                   date={searchData.date}
-                  onDateChange={(date) => setSearchData(prev => ({ ...prev, date }))}
+                  onDateChange={React.useCallback((date: Date | undefined) => {
+                    setSearchData(prev => ({ ...prev, date }))
+                  }, [])}
                   placeholder="Select travel date"
                   minDate={new Date()}
                 />

@@ -85,40 +85,48 @@ body {
   --tw-ring-color: #ef4444 !important;
 }
 
-/* Fix input text color */
-input[type="text"], 
-input[type="date"], 
+/* Fix input text color - exclude DatePicker components */
+input[type="text"]:not([data-radix-popover-trigger]), 
+input[type="date"]:not([data-radix-popover-trigger]), 
 input[type="email"], 
 input[type="password"], 
-select, 
+select:not([data-radix-select-trigger]), 
 textarea {
   color: hsl(var(--foreground)) !important;
 }
 
-input[type="text"]::placeholder, 
-input[type="date"]::placeholder, 
 input[type="email"]::placeholder, 
 input[type="password"]::placeholder, 
 textarea::placeholder {
   color: hsl(var(--muted-foreground)) !important;
 }
 
-/* Ensure proper text color in light mode */
+/* Placeholder styling for regular inputs (excluding DatePicker) */
+input[type="text"]:not([data-radix-popover-trigger])::placeholder, 
+input[type="date"]:not([data-radix-popover-trigger])::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Ensure proper text color in light mode - exclude DatePicker components */
 @media (prefers-color-scheme: light) {
-  input[type="text"], 
-  input[type="date"], 
+  input[type="text"]:not([data-radix-popover-trigger]), 
+  input[type="date"]:not([data-radix-popover-trigger]), 
   input[type="email"], 
   input[type="password"], 
-  select, 
+  select:not([data-radix-select-trigger]), 
   textarea {
     color: #1f2937 !important;
   }
   
-  input[type="text"]::placeholder, 
-  input[type="date"]::placeholder, 
   input[type="email"]::placeholder, 
   input[type="password"]::placeholder, 
   textarea::placeholder {
+    color: #6b7280 !important;
+  }
+  
+  /* Placeholder styling for regular inputs in light mode */
+  input[type="text"]:not([data-radix-popover-trigger])::placeholder, 
+  input[type="date"]:not([data-radix-popover-trigger])::placeholder {
     color: #6b7280 !important;
   }
 }
@@ -211,203 +219,66 @@ div[role="listbox"] {
 
 /* Fix for date picker popover background */
 [data-radix-popper-content-wrapper] {
-  background-color: transparent !important;
-  border: none !important;
+  background-color: white !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-radix-popper-content-wrapper] > div {
-  background-color: transparent !important;
+  background-color: white !important;
   border: none !important;
 }
 
-/* Enhanced calendar styling */
-.rdp {
+/* Native date input styling */
+input[type="date"] {
+  color: hsl(var(--foreground)) !important;
   background-color: #ffffff !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+
+/* DatePicker component isolation */
+[data-radix-popover-content] {
+  z-index: 100 !important;
+}
+
+/* Calendar component styling - optimized for performance */
+.rdp {
+  background-color: white !important;
   border-radius: 0.5rem !important;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-  border: 1px solid #e5e7eb !important;
+  will-change: transform !important;
 }
 
 .rdp-month {
-  background-color: #ffffff !important;
+  background-color: white !important;
 }
 
-/* Calendar header styling */
-.rdp-caption {
-  padding: 0.75rem 0 !important;
-  border-bottom: 1px solid #f3f4f6 !important;
-  margin-bottom: 0.5rem !important;
+/* Optimize calendar day transitions */
+.rdp-day {
+  transition: background-color 0.1s ease !important;
 }
 
-.rdp-caption_label {
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  color: #1f2937 !important;
-}
-
-/* Calendar navigation buttons */
-.rdp-nav_button {
-  width: 2rem !important;
-  height: 2rem !important;
-  border-radius: 0.375rem !important;
-  border: 1px solid #d1d5db !important;
-  background-color: #ffffff !important;
-  transition: all 0.2s ease !important;
-}
-
-.rdp-nav_button:hover {
-  background-color: #fef2f2 !important;
-  border-color: #fca5a5 !important;
-}
-
-/* Calendar table styling */
-.rdp-table {
-  width: 100% !important;
-  margin-top: 0.5rem !important;
-  border-spacing: 0 !important;
-}
-
-.rdp-row {
-  display: flex !important;
-  width: 100% !important;
-  margin-bottom: 0.125rem !important;
-}
-
-/* Calendar day names header */
-.rdp-head_row {
-  display: flex !important;
-  margin-bottom: 0.5rem !important;
-  border-bottom: 1px solid #f3f4f6 !important;
-  padding-bottom: 0.5rem !important;
-}
-
-.rdp-head_cell {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  font-weight: 600 !important;
-  color: #4b5563 !important;
-  font-size: 0.75rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: #f9fafb !important;
-  border-radius: 0.375rem !important;
-}
-
-/* Fix for date picker button background */
-button[data-radix-popover-trigger] {
-  background-color: #ffffff !important;
-  position: relative !important;
-  cursor: pointer !important;
-}
-
-/* Ensure date picker text is visible */
-button[data-radix-popover-trigger] span {
-  color: inherit !important;
-  display: block !important;
-  width: 100% !important;
-}
-
-/* Fix selected date text visibility */
-button[data-radix-popover-trigger]:not([data-placeholder]) span {
-  color: #1f2937 !important;
-  font-weight: 500 !important;
-}
-
-/* Ensure calendar icon doesn't interfere with button clicks */
-button[data-radix-popover-trigger] .lucide-calendar {
-  pointer-events: none !important;
-  z-index: 1 !important;
-}
-
-/* Calendar day cells styling */
-.rdp-cell {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  padding: 0 !important;
-  position: relative !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.rdp-button {
-  width: 100% !important;
-  height: 100% !important;
-  background-color: transparent !important;
-  border: none !important;
-  cursor: pointer !important;
-  border-radius: 0.375rem !important;
-  font-size: 0.875rem !important;
-  font-weight: 400 !important;
-  transition: all 0.2s ease !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.rdp-button:hover {
-  background-color: #f3f4f6 !important;
-  transform: scale(1.05) !important;
-}
-
-/* Selected date styling */
-.rdp-day_selected .rdp-button {
-  background-color: #dc2626 !important;
-  color: white !important;
-  font-weight: 600 !important;
-  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2) !important;
-}
-
-.rdp-day_selected .rdp-button:hover {
-  background-color: #b91c1c !important;
-  transform: scale(1.05) !important;
-}
-
-/* Today's date styling */
-.rdp-day_today .rdp-button {
-  background-color: #fef2f2 !important;
-  color: #dc2626 !important;
-  font-weight: 600 !important;
-  border: 2px solid #fca5a5 !important;
-}
-
-.rdp-day_today .rdp-button:hover {
-  background-color: #fee2e2 !important;
-}
-
-/* Outside days (previous/next month) */
-.rdp-day_outside .rdp-button {
-  color: #9ca3af !important;
-  opacity: 0.6 !important;
-}
-
-/* Disabled days */
-.rdp-day_disabled .rdp-button {
-  color: #d1d5db !important;
-  cursor: not-allowed !important;
-  opacity: 0.4 !important;
-}
-
-.rdp-day_disabled .rdp-button:hover {
-  background-color: transparent !important;
+.rdp-day:hover {
   transform: none !important;
 }
 
-/* Prevent calendar from triggering form submission */
-[data-radix-popper-content-wrapper] * {
-  pointer-events: auto !important;
+/* DatePicker button styling */
+button[data-radix-popover-trigger] {
+  background-color: white !important;
+  color: #374151 !important;
 }
 
-.rdp * {
-  pointer-events: auto !important;
-}
-
-/* Ensure calendar buttons don't submit forms */
-.rdp button {
-  cursor: pointer !important;
+button[data-radix-popover-trigger]:hover {
+  background-color: #f9fafb !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -430,4 +301,110 @@ button[data-radix-popover-trigger] .lucide-calendar {
   button[data-radix-popover-trigger] {
     background-color: hsl(var(--background)) !important;
   }
+}
+
+/* React DatePicker Styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: inherit;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  background-color: white !important;
+}
+
+.react-datepicker__header {
+  background-color: #dc2626 !important;
+  border-bottom: none !important;
+  border-radius: 0.75rem 0.75rem 0 0 !important;
+  padding: 1rem !important;
+}
+
+.react-datepicker__current-month {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+}
+
+.react-datepicker__navigation {
+  top: 1rem !important;
+}
+
+.react-datepicker__navigation--previous {
+  left: 1rem !important;
+  border-right-color: white !important;
+}
+
+.react-datepicker__navigation--next {
+  right: 1rem !important;
+  border-left-color: white !important;
+}
+
+.react-datepicker__day-names {
+  background-color: #f9fafb !important;
+  margin: 0 !important;
+  padding: 0.5rem 0 !important;
+}
+
+.react-datepicker__day-name {
+  color: #6b7280 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+}
+
+.react-datepicker__month {
+  margin: 0 !important;
+  padding: 0.5rem !important;
+}
+
+.react-datepicker__day {
+  color: #374151 !important;
+  border-radius: 0.375rem !important;
+  margin: 0.125rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  line-height: 2rem !important;
+  font-weight: 500 !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #fef2f2 !important;
+  color: #dc2626 !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #dc2626 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #b91c1c !important;
+}
+
+.react-datepicker__day--today {
+  background-color: #fef2f2 !important;
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day--disabled {
+  color: #d1d5db !important;
+  cursor: not-allowed !important;
+}
+
+.react-datepicker__day--disabled:hover {
+  background-color: transparent !important;
+  color: #d1d5db !important;
+}
+
+.react-datepicker__day--outside-month {
+  color: #d1d5db !important;
+}
+
+.react-datepicker__triangle {
+  display: none !important;
 }

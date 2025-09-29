@@ -62,7 +62,20 @@ export async function GET(
           if (bus.type.includes('Executive')) fareMultiplier = 1.2
           if (bus.type.includes('Sleeper')) fareMultiplier = 1.4
 
-          const availableSeats = bus.totalSeats - Math.floor(Math.random() * Math.floor(bus.totalSeats * 0.2))
+          // Calculate real available seats based on confirmed bookings for this date
+          const confirmedBookings = await prisma.booking.findMany({
+            where: {
+              scheduleId: scheduleId,
+              status: 'CONFIRMED',
+              // For generated schedules, we need to check bookings for the specific date
+            },
+            select: {
+              seatIds: true
+            }
+          })
+          
+          const bookedSeatsCount = confirmedBookings.reduce((total, booking) => total + booking.seatIds.length, 0)
+          const availableSeats = Math.max(0, bus.totalSeats - bookedSeatsCount)
 
           // Create the schedule in the database
           schedule = await prisma.schedule.create({

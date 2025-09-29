@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Clock, MapPin, Users, Wifi, Zap, Snowflake, AlertCircle } from 'lucide-react'
-import { formatCurrency, formatTime } from '@/lib/utils'
+import { formatCurrency, formatTime, formatDateForDisplay } from '@/lib/utils'
 
 interface Bus {
   id: string
@@ -45,6 +45,7 @@ function SearchResultsPageContent() {
   const destination = searchParams.get('destination')
   const date = searchParams.get('date')
   const passengers = searchParams.get('passengers')
+
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -118,7 +119,7 @@ function SearchResultsPageContent() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-gray-500" />
-                  <span>{date}</span>
+                  <span>{formatDateForDisplay(date)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-gray-500" />

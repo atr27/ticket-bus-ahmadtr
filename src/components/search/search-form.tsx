@@ -5,14 +5,16 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ArrowLeftRight, Calendar, Users, Search } from 'lucide-react'
+import { DatePicker } from '@/components/ui/date-picker'
+import { ArrowLeftRight, Users, Search } from 'lucide-react'
+import { formatDateForURL } from '@/lib/utils'
 
 export function SearchForm() {
   const router = useRouter()
   const [searchData, setSearchData] = useState({
     from: '',
     to: '',
-    departureDate: '',
+    departureDate: undefined as Date | undefined,
     passengers: 1
   })
 
@@ -29,7 +31,7 @@ export function SearchForm() {
     const query = new URLSearchParams({
       from: searchData.from,
       to: searchData.to,
-      date: searchData.departureDate,
+      date: formatDateForURL(searchData.departureDate!),
       passengers: searchData.passengers.toString()
     })
 
@@ -45,7 +47,7 @@ export function SearchForm() {
     }))
   }
 
-  const today = new Date().toISOString().split('T')[0]
+  const today = new Date()
 
   return (
     <Card className="bg-white shadow-xl">
@@ -101,17 +103,13 @@ export function SearchForm() {
               <label className="text-sm font-medium text-gray-700">
                 Departure Date
               </label>
-              <div className="relative">
-                <Input
-                  type="date"
-                  value={searchData.departureDate}
-                  onChange={(e) => setSearchData(prev => ({ ...prev, departureDate: e.target.value }))}
-                  min={today}
-                  className="h-12 text-base pl-10"
-                  required
-                />
-                <Calendar className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              </div>
+              <DatePicker
+                date={searchData.departureDate}
+                onDateChange={(date) => setSearchData(prev => ({ ...prev, departureDate: date }))}
+                placeholder="Select departure date"
+                minDate={today}
+                className="h-12"
+              />
             </div>
 
             <div className="space-y-2">
